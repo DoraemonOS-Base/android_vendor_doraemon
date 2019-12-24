@@ -14,10 +14,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-CYANOGEN_TARGET_PACKAGE := $(PRODUCT_OUT)/$(CYANOGEN_VERSION).zip
+DORAEMON_TARGET_PACKAGE := $(PRODUCT_OUT)/$(DORAEMON_VERSION).zip
 
 .PHONY: bacon
 bacon: $(INTERNAL_OTA_PACKAGE_TARGET)
-	$(hide) mv $(INTERNAL_OTA_PACKAGE_TARGET) $(CYANOGEN_TARGET_PACKAGE)
-	$(hide) $(MD5SUM) $(CYANOGEN_TARGET_PACKAGE) | sed "s|$(PRODUCT_OUT)/||" > $(CYANOGEN_TARGET_PACKAGE).md5sum
-	@echo "Package Complete: $(CYANOGEN_TARGET_PACKAGE)" >&2
+	$(hide) mv $(INTERNAL_OTA_PACKAGE_TARGET) $(DORAEMON_TARGET_PACKAGE)
+	$(hide) $(MD5SUM) $(DORAEMON_TARGET_PACKAGE) | sed "s|$(PRODUCT_OUT)/||" > $(DORAEMON_TARGET_PACKAGE).md5sum
+	@echo "Package Complete: $(DORAEMON_TARGET_PACKAGE)" >&2

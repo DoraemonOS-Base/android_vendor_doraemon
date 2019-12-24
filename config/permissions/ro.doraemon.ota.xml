@@ -15,7 +15,7 @@
 -->
 
 <permissions>
-    <privapp-permissions package="ro.cyanogen.ota">
+    <privapp-permissions package="ro.doraemon.ota">
         <permission name="android.permission.RECOVERY"/>
         <permission name="android.permission.ACCESS_CACHE_FILESYSTEM"/>
         <permission name="android.permission.REBOOT"/>

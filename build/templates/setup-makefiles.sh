@@ -28,9 +28,9 @@ INITIAL_COPYRIGHT_YEAR=**** FILL IN COPYRIGHT YEAR ****
 MY_DIR="${BASH_SOURCE%/*}"
 if [[ ! -d "$MY_DIR" ]]; then MY_DIR="$PWD"; fi
 
-CYANOGEN_ROOT="$MY_DIR"/../../..
+DORAEMON_ROOT="$MY_DIR"/../../..
 
-HELPER="$CYANOGEN_ROOT"/vendor/cyanogen/build/tools/extract_utils.sh
+HELPER="$DORAEMON_ROOT"/vendor/doraemon/build/tools/extract_utils.sh
 if [ ! -f "$HELPER" ]; then
     echo "Unable to find helper script at $HELPER"
     exit 1
@@ -38,7 +38,7 @@ fi
 . "$HELPER"
 
 # Initialize the helper
-setup_vendor "$DEVICE" "$VENDOR" "$CYANOGEN_ROOT"
+setup_vendor "$DEVICE" "$VENDOR" "$DORAEMON_ROOT"
 
 # Copyright headers and guards
 write_headers

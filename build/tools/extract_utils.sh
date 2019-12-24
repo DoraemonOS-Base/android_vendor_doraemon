@@ -69,15 +69,15 @@ function setup_vendor() {
         exit 1
     fi
 
-    export CYANOGEN_ROOT="$3"
-    if [ ! -d "$CYANOGEN_ROOT" ]; then
-        echo "\$CYANOGEN_ROOT must be set and valid before including this script!"
+    export DORAEMON_ROOT="$3"
+    if [ ! -d "$DORAEMON_ROOT" ]; then
+        echo "\$CDORAEMON_ROOT must be set and valid before including this script!"
         exit 1
     fi
 
     export OUTDIR=vendor/"$VENDOR"/"$DEVICE"
-    if [ ! -d "$CYANOGEN_ROOT/$OUTDIR" ]; then
-        mkdir -p "$CYANOGEN_ROOT/$OUTDIR"
+    if [ ! -d "$DORAEMON_ROOT/$OUTDIR" ]; then
+        mkdir -p "$DORAEMON_ROOT/$OUTDIR"
     fi
 
     VNDNAME="$6"
@@ -85,10 +85,10 @@ function setup_vendor() {
         VNDNAME="$DEVICE"
     fi
 
-    export PRODUCTMK="$CYANOGEN_ROOT"/"$OUTDIR"/"$VNDNAME"-vendor.mk
-    export ANDROIDBP="$CYANOGEN_ROOT"/"$OUTDIR"/Android.bp
-    export ANDROIDMK="$CYANOGEN_ROOT"/"$OUTDIR"/Android.mk
-    export BOARDMK="$CYANOGEN_ROOT"/"$OUTDIR"/BoardConfigVendor.mk
+    export PRODUCTMK="$DORAEMON_ROOT"/"$OUTDIR"/"$VNDNAME"-vendor.mk
+    export ANDROIDBP="$DORAEMON_ROOT"/"$OUTDIR"/Android.bp
+    export ANDROIDMK="$DORAEMON_ROOT"/"$OUTDIR"/Android.mk
+    export BOARDMK="$DORAEMON_ROOT"/"$OUTDIR"/BoardConfigVendor.mk
 
     if [ "$4" == "true" ] || [ "$4" == "1" ]; then
         COMMON=1
@@ -1194,7 +1194,7 @@ function get_file() {
 # Convert apk|jar .odex in the corresposing classes.dex
 #
 function oat2dex() {
-    local CYANOGEN_TARGET="$1"
+    local DORAEMON_TARGET="$1"
     local OEM_TARGET="$2"
     local SRC="$3"
     local TARGET=
@@ -1202,16 +1202,16 @@ function oat2dex() {
     local HOST="$(uname)"
 
     if [ -z "$BAKSMALIJAR" ] || [ -z "$SMALIJAR" ]; then
-        export BAKSMALIJAR="$CYANOGEN_ROOT"/prebuilts/tools-cyanogen/common/smali/baksmali.jar
-        export SMALIJAR="$CYANOGEN_ROOT"/prebuilts/tools-cyanogen/common/smali/smali.jar
+        export BAKSMALIJAR="$DORAEMON_ROOT"/prebuilts/tools-doraemon/common/smali/baksmali.jar
+        export SMALIJAR="$DORAEMON_ROOT"/prebuilts/tools-doraemon/common/smali/smali.jar
     fi
 
     if [ -z "$VDEXEXTRACTOR" ]; then
-        export VDEXEXTRACTOR="$CYANOGEN_ROOT"/prebuilts/tools-cyanogen/"${HOST,,}"-x86/bin/vdexExtractor
+        export VDEXEXTRACTOR="$DORAEMON_ROOT"/prebuilts/tools-doraemon/"${HOST,,}"-x86/bin/vdexExtractor
     fi
 
     if [ -z "$CDEXCONVERTER" ]; then
-        export CDEXCONVERTER="$CYANOGEN_ROOT"/prebuilts/tools-cyanogen/"${HOST,,}"-x86/bin/compact_dex_converter
+        export CDEXCONVERTER="$DORAEMON_ROOT"/prebuilts/tools-doraemon/"${HOST,,}"-x86/bin/compact_dex_converter
     fi
 
     # Extract existing boot.oats to the temp folder
@@ -1231,11 +1231,11 @@ function oat2dex() {
         FULLY_DEODEXED=1 && return 0 # system is fully deodexed, return
     fi
 
-    if [ ! -f "$CYANOGEN_TARGET" ]; then
+    if [ ! -f "$DORAEMON_TARGET" ]; then
         return;
     fi
 
-    if grep "classes.dex" "$CYANOGEN_TARGET" >/dev/null; then
+    if grep "classes.dex" "$DORAEMON_TARGET" >/dev/null; then
         return 0 # target apk|jar is already odexed, return
     fi
 
@@ -1263,7 +1263,7 @@ function oat2dex() {
                 java -jar "$BAKSMALIJAR" deodex -o "$TMPDIR/dexout" -b "$BOOTOAT" -d "$TMPDIR" "$TMPDIR/$(basename "$OAT")"
                 java -jar "$SMALIJAR" assemble "$TMPDIR/dexout" -o "$TMPDIR/classes.dex"
             fi
-        elif [[ "$CYANOGEN_TARGET" =~ .jar$ ]]; then
+        elif [[ "$DORAEMON_TARGET" =~ .jar$ ]]; then
             JAROAT="$TMPDIR/system/framework/$ARCH/boot-$(basename ${OEM_TARGET%.*}).oat"
             JARVDEX="/system/framework/boot-$(basename ${OEM_TARGET%.*}).vdex"
             if [ ! -f "$JAROAT" ]; then
@@ -1458,7 +1458,7 @@ function extract() {
     local FIXUP_HASHLIST=( ${PRODUCT_COPY_FILES_FIXUP_HASHES[@]} ${PRODUCT_PACKAGES_FIXUP_HASHES[@]} )
     local PRODUCT_COPY_FILES_COUNT=${#PRODUCT_COPY_FILES_LIST[@]}
     local COUNT=${#FILELIST[@]}
-    local OUTPUT_ROOT="$CYANOGEN_ROOT"/"$OUTDIR"/proprietary
+    local OUTPUT_ROOT="$DORAEMON_ROOT"/"$OUTDIR"/proprietary
     local OUTPUT_TMP="$TMPDIR"/"$OUTDIR"/proprietary
 
     if [ "$SRC" = "adb" ]; then
@@ -1486,7 +1486,7 @@ function extract() {
             # If OTA is block based, extract it.
             elif [ -a "$DUMPDIR"/system.new.dat ]; then
                 echo "Converting system.new.dat to system.img"
-                python "$CYANOGEN_ROOT"/vendor/cyanogen/build/tools/sdat2img.py "$DUMPDIR"/system.transfer.list "$DUMPDIR"/system.new.dat "$DUMPDIR"/system.img 2>&1
+                python "$DORAEMON_ROOT"/vendor/doraemon/build/tools/sdat2img.py "$DUMPDIR"/system.transfer.list "$DUMPDIR"/system.new.dat "$DUMPDIR"/system.img 2>&1
                 rm -rf "$DUMPDIR"/system.new.dat "$DUMPDIR"/system
                 mkdir "$DUMPDIR"/system "$DUMPDIR"/tmp
                 echo "Requesting sudo access to mount the system.img"
@@ -1896,7 +1896,7 @@ function extract_firmware() {
     local FILELIST=( ${PRODUCT_COPY_FILES_LIST[@]} )
     local COUNT=${#FILELIST[@]}
     local SRC="$2"
-    local OUTPUT_DIR="$CYANOGEN_ROOT"/"$OUTDIR"/radio
+    local OUTPUT_DIR="$DORAEMON_ROOT"/"$OUTDIR"/radio
 
     if [ "$VENDOR_RADIO_STATE" -eq "0" ]; then
         echo "Cleaning firmware output directory ($OUTPUT_DIR).."

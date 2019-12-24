@@ -1,4 +1,4 @@
 # Inherit common PixelExperience stuff
-$(call inherit-product, vendor/cyanogen/config/common.mk)
+$(call inherit-product, vendor/doraemon/config/common.mk)
 
 PRODUCT_SIZE := full

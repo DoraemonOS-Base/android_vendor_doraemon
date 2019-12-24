@@ -1,4 +1,4 @@
-PRODUCT_BRAND ?= CyanogenOS
+PRODUCT_BRAND ?= DoraemonOS
 
 PRODUCT_BUILD_PROP_OVERRIDES += BUILD_UTC_DATE=0
 
@@ -41,22 +41,22 @@ endif
 
 # Some permissions
 PRODUCT_COPY_FILES += \
-    vendor/cyanogen/config/permissions/backup.xml:system/etc/sysconfig/backup.xml \
-    vendor/cyanogen/config/permissions/privapp-permissions-fm.xml:system/etc/permissions/privapp-permissions-fm.xml \
-    vendor/cyanogen/config/permissions/privapp-permissions-snap.xml:system/etc/permissions/privapp-permissions-snap.xml \
-    vendor/cyanogen/config/permissions/privapp-permissions-camera2.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/permissions/privapp-permissions-camera2.xml
+    vendor/doraemon/config/permissions/backup.xml:system/etc/sysconfig/backup.xml \
+    vendor/doraemon/config/permissions/privapp-permissions-fm.xml:system/etc/permissions/privapp-permissions-fm.xml \
+    vendor/doraemon/config/permissions/privapp-permissions-snap.xml:system/etc/permissions/privapp-permissions-snap.xml \
+    vendor/doraemon/config/permissions/privapp-permissions-camera2.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/permissions/privapp-permissions-camera2.xml
 
 # Copy all custom init rc files
-$(foreach f,$(wildcard vendor/cyanogen/prebuilt/common/etc/init/*.rc),\
+$(foreach f,$(wildcard vendor/doraemon/prebuilt/common/etc/init/*.rc),\
     $(eval PRODUCT_COPY_FILES += $(f):system/etc/init/$(notdir $f)))
 
 # Copy over added mimetype supported in libcore.net.MimeUtils
 PRODUCT_COPY_FILES += \
-    vendor/cyanogen/prebuilt/common/lib/content-types.properties:system/lib/content-types.properties
+    vendor/doraemon/prebuilt/common/lib/content-types.properties:system/lib/content-types.properties
 
 # Enable Android Beam on all targets
 PRODUCT_COPY_FILES += \
-    vendor/cyanogen/config/permissions/android.software.nfc.beam.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/permissions/android.software.nfc.beam.xml
+    vendor/doraemon/config/permissions/android.software.nfc.beam.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/permissions/android.software.nfc.beam.xml
 
 # Enable SIP+VoIP on all targets
 PRODUCT_COPY_FILES += \
@@ -72,7 +72,7 @@ PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
 
 # Power whitelist
 PRODUCT_COPY_FILES += \
-    vendor/cyanogen/config/permissions/custom-power-whitelist.xml:system/etc/sysconfig/custom-power-whitelist.xml
+    vendor/doraemon/config/permissions/custom-power-whitelist.xml:system/etc/sysconfig/custom-power-whitelist.xml
 
 # Do not include art debug targets
 PRODUCT_ART_TARGET_INCLUDE_DEBUG_BUILD := false
@@ -103,8 +103,8 @@ PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
 PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
     media.recorder.show_manufacturer_and_model=true
 
-PRODUCT_ENFORCE_RRO_EXCLUDED_OVERLAYS += vendor/cyanogen/overlay
-DEVICE_PACKAGE_OVERLAYS += vendor/cyanogen/overlay/common
+PRODUCT_ENFORCE_RRO_EXCLUDED_OVERLAYS += vendor/doraemon/overlay
+DEVICE_PACKAGE_OVERLAYS += vendor/doraemon/overlay/common
 
 # PixelSetupWizard overlay
 PRODUCT_PACKAGES += \
@@ -120,10 +120,10 @@ PRODUCT_PACKAGES += \
     themed_bootanimation
 
 # Branding
-include vendor/cyanogen/config/branding.mk
+include vendor/doraemon/config/branding.mk
 
 # OTA
-include vendor/cyanogen/config/ota.mk
+include vendor/doraemon/config/ota.mk
 
 # GApps
 include vendor/gapps/config.mk

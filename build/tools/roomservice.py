@@ -43,11 +43,11 @@ except ImportError:
 DEBUG = False
 default_manifest = ".repo/manifest.xml"
 
-cyanogen_local_manifest = ".repo/local_manifests/pixel.xml"
-cyanogen_default_revision =  os.getenv('ROOMSERVICE_DEFAULT_BRANCH', 'ten')
-cyanogen_dependencies = "cyanogen.dependencies"
+doraemon_local_manifest = ".repo/local_manifests/pixel.xml"
+doraemon_default_revision =  os.getenv('ROOMSERVICE_DEFAULT_BRANCH', 'ten')
+doraemon_dependencies = "doraemon.dependencies"
 org_manifest = "devices"  # leave empty if org is provided in manifest
-org_display = "CyanogenOS-Devices"  # needed for displaying
+org_display = "DoraemonOS-Devices"  # needed for displaying
 
 github_auth = None
 
@@ -121,7 +121,7 @@ def get_remote(manifest=None, remote_name=None):
 
 
 def get_revision(manifest=None, p="build"):
-    return cyanogen_default_revision
+    return doraemon_default_revision
     m = manifest or load_manifest(default_manifest)
     project = None
     for proj in m.findall('project'):
@@ -134,13 +134,13 @@ def get_revision(manifest=None, p="build"):
     remote = get_remote(manifest=m, remote_name=project.get('remote'))
     revision = remote.get('revision')
     if not revision:
-        return cyanogen_default_revision
+        return doraemon_default_revision
     return revision.replace('refs/heads/', '').replace('refs/tags/', '')
 
 
 def get_from_manifest(device_name):
-    if os.path.exists(cyanogen_local_manifest):
-        man = load_manifest(cyanogen_local_manifest)
+    if os.path.exists(doraemon_local_manifest):
+        man = load_manifest(doraemon_local_manifest)
         for local_path in man.findall("project"):
             lp = local_path.get("path").strip('/')
             if lp.startswith("device/") and lp.endswith("/" + device_name):
@@ -149,7 +149,7 @@ def get_from_manifest(device_name):
 
 
 def is_in_manifest(project_path):
-    for man in (cyanogen_local_manifest, default_manifest):
+    for man in (doraemon_local_manifest, default_manifest):
         man = load_manifest(man)
         for local_path in man.findall("project"):
             if local_path.get("path") == project_path:
@@ -158,7 +158,7 @@ def is_in_manifest(project_path):
 
 
 def add_to_manifest(repos, fallback_branch=None):
-    lm = load_manifest(cyanogen_local_manifest)
+    lm = load_manifest(doraemon_local_manifest)
 
     for repo in repos:
         repo_name = repo['repository']
@@ -166,7 +166,7 @@ def add_to_manifest(repos, fallback_branch=None):
 	if 'branch' in repo:
 	    repo_branch=repo['branch']
 	else:
-	    repo_branch=cyanogen_default_revision
+	    repo_branch=doraemon_default_revision
 	if 'remote' in repo:
 	    repo_remote=repo['remote']
 	elif "/" not in repo_name:
@@ -204,7 +204,7 @@ def add_to_manifest(repos, fallback_branch=None):
     raw_xml = "\n".join(('<?xml version="1.0" encoding="UTF-8"?>',
                          ElementTree.tostring(lm).decode()))
 
-    f = open(cyanogen_local_manifest, 'w')
+    f = open(doraemon_local_manifest, 'w')
     f.write(raw_xml)
     f.close()
 
@@ -219,7 +219,7 @@ def fetch_dependencies(repo_path, fallback_branch=None):
 
     print('Looking for dependencies')
 
-    dep_p = '/'.join((repo_path, cyanogen_dependencies))
+    dep_p = '/'.join((repo_path, doraemon_dependencies))
     if os.path.exists(dep_p):
         with open(dep_p) as dep_f:
             dependencies = json.load(dep_f)
@@ -234,7 +234,7 @@ def fetch_dependencies(repo_path, fallback_branch=None):
         if not is_in_manifest(dependency['target_path']):
             if not dependency.get('branch'):
                 dependency['branch'] = (get_revision() or
-                                        cyanogen_default_revision)
+                                        doraemon_default_revision)
 
             fetch_list.append(dependency)
             syncable_repos.append(dependency['target_path'])
@@ -280,10 +280,10 @@ def detect_revision(repo):
             print("Using fallback branch: %s" % fallback)
             return fallback
 
-    if has_branch(result, cyanogen_default_revision):
-        print("Falling back to cyanogen revision: %s"
-              % cyanogen_default_revision)
-        return cyanogen_default_revision
+    if has_branch(result, doraemon_default_revision):
+        print("Falling back to doraemon revision: %s"
+              % doraemon_default_revision)
+        return doraemon_default_revision
 
     print("Branches found:")
     for branch in result:
@@ -362,7 +362,7 @@ def main():
     print("Repository for %s not found in the %s Github repository list."
           % (device, org_display))
     print("If this is in error, you may need to manually add it to your "
-          "%s" % cyanogen_local_manifest)
+          "%s" % doraemon_local_manifest)
 
 if __name__ == "__main__":
     main()

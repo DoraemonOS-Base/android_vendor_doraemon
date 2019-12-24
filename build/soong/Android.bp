@@ -1,14 +1,14 @@
 bootstrap_go_package {
-    name: "soong-cyanogen",
-    pkgPath: "cyanogen/soong/android",
+    name: "soong-doraemon",
+    pkgPath: "doraemon/soong/android",
     srcs: [
         "android/variable.go",
     ],
 }
 
 bootstrap_go_package {
-    name: "soong-cyanogen-generator",
-    pkgPath: "cyanogen/soong/generator",
+    name: "soong-doraemon-generator",
+    pkgPath: "doraemon/soong/generator",
     deps: [
         "blueprint",
         "blueprint-pathtools",
